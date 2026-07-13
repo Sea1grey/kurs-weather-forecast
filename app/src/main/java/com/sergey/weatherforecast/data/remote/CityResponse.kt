@@ -1,4 +1,8 @@
 package com.sergey.weatherforecast.data.remote
 
-class CityResponse {
-}
+data class CityResponse(
+    val name: String,
+    val latitude: Double,
+    val longitude: Double,
+    val country: String
+)

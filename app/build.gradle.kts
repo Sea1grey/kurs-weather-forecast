@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+val apiKey = project.findProperty("API_NINJAS_KEY") as String? ?: ""
+
 android {
     namespace = "com.sergey.weatherforecast"
     compileSdk = 36
@@ -17,6 +19,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "API_NINJAS_KEY",
+            "\"$apiKey\""
+        )
     }
 
     buildTypes {
@@ -34,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     kotlinOptions {
         jvmTarget = "11"
