@@ -12,6 +12,7 @@ import com.sergey.weatherforecast.data.local.AppDatabase
 import com.sergey.weatherforecast.viewmodel.WeatherViewModelFactory
 import com.sergey.weatherforecast.data.remote.WeatherApi
 import com.sergey.weatherforecast.ui.WeatherScreen
+import com.sergey.weatherforecast.data.remote.CityApi
 
 class MainActivity : ComponentActivity() {
 
@@ -25,8 +26,9 @@ class MainActivity : ComponentActivity() {
             val database = AppDatabase.create(applicationContext)
 
             val repository = WeatherRepository(
-                database.cityDao(),
-                WeatherApi.create()
+                    database.cityDao(),
+                    WeatherApi.create(),
+                    CityApi.create()
             )
 
             val factory = WeatherViewModelFactory(repository)

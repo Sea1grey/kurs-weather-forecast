@@ -16,6 +16,13 @@ class WeatherViewModel(
     private val _weather =
         MutableStateFlow<WeatherResponse?>(null)
 
+    private val _searchText = MutableStateFlow("")
+    val searchText: StateFlow<String> = _searchText.asStateFlow()
+
+    fun updateSearchText(text: String) {
+        _searchText.value = text
+    }
+
     val weather: StateFlow<WeatherResponse?> =
         _weather.asStateFlow()
 
@@ -26,6 +33,23 @@ class WeatherViewModel(
                     55.75,
                     37.62
                 )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun searchWeather() {
+        viewModelScope.launch {
+            try {
+                val city = repository.searchCity(searchText.value)
+                    ?: return@launch
+
+                _weather.value = repository.getCurrentWeather(
+                    city.latitude,
+                    city.longitude
+                )
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }

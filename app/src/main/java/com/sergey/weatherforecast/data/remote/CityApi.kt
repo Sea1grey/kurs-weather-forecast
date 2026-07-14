@@ -2,11 +2,11 @@ package com.sergey.weatherforecast.data.remote
 
 import com.sergey.weatherforecast.BuildConfig
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import okhttp3.logging.HttpLoggingInterceptor
 
 interface CityApi {
 
@@ -19,15 +19,16 @@ interface CityApi {
 
         fun create(): CityApi {
 
-            val client = OkHttpClient.Builder()
-                .addInterceptor { chain ->
+            val logging = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
 
-                    val request: Request = chain.request()
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .addInterceptor { chain ->
+                    val request = chain.request()
                         .newBuilder()
-                        .addHeader(
-                            "X-Api-Key",
-                            BuildConfig.API_NINJAS_KEY
-                        )
+                        .addHeader("X-Api-Key", BuildConfig.API_NINJAS_KEY)
                         .build()
 
                     chain.proceed(request)

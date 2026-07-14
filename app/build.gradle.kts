@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -5,7 +7,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
-val apiKey = project.findProperty("API_NINJAS_KEY") as String? ?: ""
+val localProperties = Properties()
+localProperties.load(rootProject.file("local.properties").inputStream())
+
+val apiKey = localProperties.getProperty("API_NINJAS_KEY") ?: ""
 
 android {
     namespace = "com.sergey.weatherforecast"
