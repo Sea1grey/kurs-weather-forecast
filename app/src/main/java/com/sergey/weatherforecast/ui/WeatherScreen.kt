@@ -17,6 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 
 
 
@@ -29,6 +32,8 @@ fun WeatherScreen(
 
     val searchText by viewModel.searchText
         .collectAsStateWithLifecycle()
+
+    val cityName by viewModel.cityName.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.loadWeather()
@@ -66,11 +71,52 @@ fun WeatherScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text =
-                    weather?.current?.temperature_2m?.toString()
-                        ?: "No data"
-            )
+            weather?.let {
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 8.dp
+                    )
+                ) {
+
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+
+                        Text(
+                            text = cityName,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Text(
+                            text = weatherIcon(it.current.weather_code),
+                            style = MaterialTheme.typography.displayLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "${it.current.temperature_2m}°C",
+                            style = MaterialTheme.typography.displayLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = weatherDescription(
+                                it.current.weather_code
+                            )
+                        )
+
+                        Text(
+                            text = "Wind: ${it.current.wind_speed_10m} km/h"
+                        )
+                    }
+                }
+            }
         }
     }
 }

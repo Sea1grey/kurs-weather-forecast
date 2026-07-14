@@ -17,6 +17,10 @@ class WeatherViewModel(
         MutableStateFlow<WeatherResponse?>(null)
 
     private val _searchText = MutableStateFlow("")
+
+    private val _cityName = MutableStateFlow("Moscow")
+    val cityName: StateFlow<String> = _cityName.asStateFlow()
+
     val searchText: StateFlow<String> = _searchText.asStateFlow()
 
     fun updateSearchText(text: String) {
@@ -49,6 +53,8 @@ class WeatherViewModel(
                     city.latitude,
                     city.longitude
                 )
+
+                _cityName.value = city.name
 
             } catch (e: Exception) {
                 e.printStackTrace()

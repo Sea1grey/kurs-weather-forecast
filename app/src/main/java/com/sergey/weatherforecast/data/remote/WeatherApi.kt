@@ -13,7 +13,9 @@ interface WeatherApi {
     suspend fun getCurrentWeather(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("current") current: String = "temperature_2m"
+        @Query("current")
+        current: String =
+            "temperature_2m,wind_speed_10m,weather_code"
     ): WeatherResponse
 
     companion object {

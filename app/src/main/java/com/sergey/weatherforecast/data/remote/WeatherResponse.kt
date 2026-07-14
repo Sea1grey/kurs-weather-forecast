@@ -6,5 +6,6 @@ data class WeatherResponse(
 
 data class CurrentWeather(
     val temperature_2m: Double,
-    val wind_speed_10m: Double
+    val wind_speed_10m: Double,
+    val weather_code: Int
 )
