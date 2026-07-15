@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.sergey.weatherforecast.data.remote.CityResponse
+import com.sergey.weatherforecast.data.local.CityEntity
 
 class WeatherViewModel(
     private val repository: WeatherRepository
@@ -19,9 +21,14 @@ class WeatherViewModel(
     private val _searchText = MutableStateFlow("")
 
     private val _cityName = MutableStateFlow("Moscow")
+
+    private var currentCity: CityResponse? = null
+
     val cityName: StateFlow<String> = _cityName.asStateFlow()
 
     val searchText: StateFlow<String> = _searchText.asStateFlow()
+
+    val cities = repository.getCities()
 
     fun updateSearchText(text: String) {
         _searchText.value = text
@@ -30,8 +37,29 @@ class WeatherViewModel(
     val weather: StateFlow<WeatherResponse?> =
         _weather.asStateFlow()
 
+    fun loadCity(city: CityEntity) {
+
+        viewModelScope.launch {
+
+            _cityName.value = city.name
+
+            _weather.value =
+                repository.getCurrentWeather(
+                    city.latitude,
+                    city.longitude
+                )
+        }
+    }
+
     fun loadWeather() {
         viewModelScope.launch {
+            currentCity = CityResponse(
+                name = "Moscow",
+                latitude = 55.75,
+                longitude = 37.62,
+                country = "Russia"
+            )
+
             try {
                 _weather.value = repository.getCurrentWeather(
                     55.75,
@@ -59,6 +87,45 @@ class WeatherViewModel(
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+            val city = repository.searchCity(searchText.value)
+                ?: return@launch
+
+            currentCity = city
+
+            _cityName.value = city.name
+
+            _weather.value = repository.getCurrentWeather(
+                city.latitude,
+                city.longitude
+            )
+        }
+
+    }
+
+    fun addCurrentCity() {
+
+        val city = currentCity ?: return
+
+        viewModelScope.launch {
+
+            if (repository.cityExists(city.name)) {
+                return@launch
+            }
+
+            repository.addCity(
+                CityEntity(
+                    name = city.name,
+                    latitude = city.latitude,
+                    longitude = city.longitude
+                )
+            )
+        }
+    }
+
+    fun deleteCity(city: CityEntity) {
+
+        viewModelScope.launch {
+            repository.deleteCity(city)
         }
     }
 }

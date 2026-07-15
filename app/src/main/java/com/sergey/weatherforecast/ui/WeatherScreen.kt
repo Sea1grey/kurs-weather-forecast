@@ -20,6 +20,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 
 
 
@@ -34,6 +42,10 @@ fun WeatherScreen(
         .collectAsStateWithLifecycle()
 
     val cityName by viewModel.cityName.collectAsStateWithLifecycle()
+
+    val cities by viewModel.cities.collectAsStateWithLifecycle(
+        initialValue = emptyList()
+    )
 
     LaunchedEffect(Unit) {
         viewModel.loadWeather()
@@ -114,6 +126,65 @@ fun WeatherScreen(
                         Text(
                             text = "Wind: ${it.current.wind_speed_10m} km/h"
                         )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    viewModel.addCurrentCity()
+                }
+            ) {
+                Text("⭐ Add to favorites")
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "Favorites",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LazyColumn {
+
+                items(cities) { city ->
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            Text(
+                                text = city.name,
+                                modifier = Modifier.clickable {
+                                    viewModel.loadCity(city)
+                                }
+                            )
+
+                            IconButton(
+                                onClick = {
+                                    viewModel.deleteCity(city)
+                                }
+                            ) {
+
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete city"
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -13,6 +13,9 @@ interface CityDao {
     @Query("SELECT * FROM cities")
     fun getAllCities(): Flow<List<CityEntity>>
 
+    @Query("SELECT * FROM cities WHERE name = :name LIMIT 1")
+    suspend fun getCityByName(name: String): CityEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(city: CityEntity)
 

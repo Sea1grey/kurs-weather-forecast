@@ -21,6 +21,10 @@ class WeatherRepository(
         cityDao.insert(city)
     }
 
+    suspend fun cityExists(name: String): Boolean {
+        return cityDao.getCityByName(name) != null
+    }
+
     suspend fun deleteCity(city: CityEntity) {
         cityDao.delete(city)
     }
