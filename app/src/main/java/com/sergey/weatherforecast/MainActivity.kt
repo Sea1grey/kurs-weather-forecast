@@ -13,6 +13,7 @@ import com.sergey.weatherforecast.viewmodel.WeatherViewModelFactory
 import com.sergey.weatherforecast.data.remote.WeatherApi
 import com.sergey.weatherforecast.ui.WeatherScreen
 import com.sergey.weatherforecast.data.remote.CityApi
+import com.sergey.weatherforecast.data.preferences.DataStoreManager
 
 class MainActivity : ComponentActivity() {
 
@@ -25,10 +26,14 @@ class MainActivity : ComponentActivity() {
 
             val database = AppDatabase.create(applicationContext)
 
+            val dataStoreManager =
+                DataStoreManager(applicationContext)
+
             val repository = WeatherRepository(
                     database.cityDao(),
                     WeatherApi.create(),
-                    CityApi.create()
+                    CityApi.create(),
+                    dataStoreManager
             )
 
             val factory = WeatherViewModelFactory(repository)

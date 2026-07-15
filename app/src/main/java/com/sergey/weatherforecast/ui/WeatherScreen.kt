@@ -48,7 +48,10 @@ fun WeatherScreen(
     )
 
     LaunchedEffect(Unit) {
+
         viewModel.loadWeather()
+
+        viewModel.loadLastCity()
     }
 
     androidx.compose.material3.Surface {

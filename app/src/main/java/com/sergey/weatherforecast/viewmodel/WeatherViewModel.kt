@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.sergey.weatherforecast.data.remote.CityResponse
 import com.sergey.weatherforecast.data.local.CityEntity
+import com.sergey.weatherforecast.data.preferences.DataStoreManager
 
 class WeatherViewModel(
     private val repository: WeatherRepository
@@ -42,12 +43,36 @@ class WeatherViewModel(
         viewModelScope.launch {
 
             _cityName.value = city.name
+            repository.saveLastCity(city.name)
 
             _weather.value =
                 repository.getCurrentWeather(
                     city.latitude,
                     city.longitude
                 )
+        }
+    }
+
+    fun loadLastCity() {
+
+        viewModelScope.launch {
+
+            repository.getLastCity().collect { cityName ->
+
+                if (cityName == null) return@collect
+
+                val city =
+                    repository.getCityByName(cityName)
+                        ?: return@collect
+
+                _cityName.value = city.name
+
+                _weather.value =
+                    repository.getCurrentWeather(
+                        city.latitude,
+                        city.longitude
+                    )
+            }
         }
     }
 
@@ -83,6 +108,7 @@ class WeatherViewModel(
                 )
 
                 _cityName.value = city.name
+                repository.saveLastCity(city.name)
 
             } catch (e: Exception) {
                 e.printStackTrace()
