@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import com.sergey.weatherforecast.data.remote.CityResponse
 import com.sergey.weatherforecast.data.local.CityEntity
 import com.sergey.weatherforecast.data.preferences.DataStoreManager
+import kotlinx.coroutines.flow.Flow
 
 class WeatherViewModel(
     private val repository: WeatherRepository
@@ -29,7 +30,8 @@ class WeatherViewModel(
 
     val searchText: StateFlow<String> = _searchText.asStateFlow()
 
-    val cities = repository.getCities()
+    val cities: Flow<List<CityEntity>> =
+        repository.getCities()
 
     fun updateSearchText(text: String) {
         _searchText.value = text
