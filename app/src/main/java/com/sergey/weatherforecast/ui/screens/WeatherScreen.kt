@@ -18,6 +18,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Surface
 import com.sergey.weatherforecast.ui.components.SearchBar
 import com.sergey.weatherforecast.ui.components.CurrentWeatherCard
+import com.sergey.weatherforecast.ui.components.ForecastCard
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.ui.res.stringResource
+import com.sergey.weatherforecast.R
 
 @Composable
 fun WeatherScreen(
@@ -32,45 +36,65 @@ fun WeatherScreen(
     val cityName by viewModel.cityName.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-
-        viewModel.loadWeather()
-
         viewModel.loadLastCity()
     }
 
     Surface {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            SearchBar(
-                searchText = searchText,
-                onTextChange = viewModel::updateSearchText,
-                onSearch = viewModel::searchWeather
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            weather?.let {
-                CurrentWeatherCard(
-                    weather = weather,
-                    cityName = cityName,
+            item{
+                SearchBar(
+                    searchText = searchText,
+                    onTextChange = viewModel::updateSearchText,
+                    onSearch = viewModel::searchWeather
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = {
-                    viewModel.addCurrentCity()
+            item{
+                weather?.let {
+                    CurrentWeatherCard(
+                        weather = weather,
+                        cityName = cityName,
+                    )
                 }
-            ) {
-                Text("⭐ Add to favorites")
             }
 
+            item{
+                Button(
+                    onClick = {
+                        viewModel.addCurrentCity()
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.favorite)
+                    )
+                }
+            }
+
+            weather?.daily?.let { daily ->
+
+                item {
+                    Text(
+                        text = stringResource(R.string.forecast_7_days)
+                    )
+                }
+
+                items(daily.time.size) { index ->
+
+                    ForecastCard(
+                        day = daily.time[index],
+                        maxTemp = daily.temperature_2m_max[index],
+                        minTemp = daily.temperature_2m_min[index],
+                        weatherCode = daily.weather_code[index]
+                    )
+                }
+            }
         }
     }
+
 }

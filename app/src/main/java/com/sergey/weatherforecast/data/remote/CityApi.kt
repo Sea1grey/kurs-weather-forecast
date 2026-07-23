@@ -12,7 +12,7 @@ interface CityApi {
 
     @GET("v1/city")
     suspend fun searchCity(
-        @Query("name") city: String
+        @Query("name") city: String,
     ): List<CityResponse>
 
     companion object {

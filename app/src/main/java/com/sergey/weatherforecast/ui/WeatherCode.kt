@@ -1,5 +1,8 @@
 package com.sergey.weatherforecast.ui
 
+
+import com.sergey.weatherforecast.R
+
 fun weatherIcon(code: Int): String =
     when (code) {
         0 -> "☀️"
@@ -19,21 +22,22 @@ fun weatherIcon(code: Int): String =
         else -> "❓"
     }
 
-fun weatherDescription(code: Int): String =
+fun weatherDescription(code: Int): Int =
     when (code) {
-        0 -> "Clear sky"
 
-        1, 2, 3 -> "Partly cloudy"
+        0 -> R.string.clear_sky
 
-        45, 48 -> "Fog"
+        1, 2, 3 -> R.string.partly_cloudy
 
-        51, 53, 55 -> "Drizzle"
+        45, 48 -> R.string.fog
 
-        61, 63, 65 -> "Rain"
+        51, 53, 55 -> R.string.drizzle
 
-        71, 73, 75 -> "Snow"
+        61, 63, 65 -> R.string.rain
 
-        95 -> "Thunderstorm"
+        71, 73, 75 -> R.string.snow
 
-        else -> "Unknown"
+        95 -> R.string.thunderstorm
+
+        else -> R.string.unknown
     }

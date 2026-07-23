@@ -21,6 +21,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.res.stringResource
+import com.sergey.weatherforecast.R
 
 @Composable
 fun Navigation(
@@ -55,7 +57,9 @@ fun Navigation(
                         )
                     },
                     label = {
-                        Text("Weather")
+                        Text(
+                            stringResource(R.string.weather_label)
+                        )
                     }
                 )
 
@@ -73,7 +77,9 @@ fun Navigation(
                         )
                     },
                     label = {
-                        Text("Favorites")
+                        Text(
+                            stringResource(R.string.favorite_label)
+                        )
                     }
                 )
 
@@ -91,7 +97,9 @@ fun Navigation(
                         )
                     },
                     label = {
-                        Text("Settings")
+                        Text(
+                            stringResource(R.string.settings_label)
+                        )
                     }
                 )
             }

@@ -15,7 +15,12 @@ interface WeatherApi {
         @Query("longitude") longitude: Double,
         @Query("current")
         current: String =
-            "temperature_2m,wind_speed_10m,weather_code"
+            "temperature_2m,wind_speed_10m,weather_code",
+
+        @Query("daily")
+        daily: String =
+            "temperature_2m_max,temperature_2m_min,weather_code"
+
     ): WeatherResponse
 
     companion object {

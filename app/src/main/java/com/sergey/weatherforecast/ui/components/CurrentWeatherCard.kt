@@ -10,6 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sergey.weatherforecast.data.remote.WeatherResponse
+import com.sergey.weatherforecast.ui.weatherIcon
+import com.sergey.weatherforecast.ui.weatherDescription
+import androidx.compose.ui.res.stringResource
+import com.sergey.weatherforecast.R
 
 @Composable
 fun CurrentWeatherCard(
@@ -27,18 +31,40 @@ fun CurrentWeatherCard(
         ) {
 
             Text(
-                text = cityName.ifBlank { "Current location" }
+                stringResource(R.string.current_location)
             )
 
             Text(
                 text = weather?.current?.temperature_2m?.let {
-                    "Temperature: $it°C"
-                } ?: "No data"
+                    stringResource(
+                        R.string.temperature_value,
+                        it
+                    )
+                } ?: stringResource(R.string.no_data)
+            )
+
+            Text(
+                text = weather?.current?.let {
+                    weatherIcon(it.weather_code)
+                } ?: ""
+            )
+
+            Text(
+                text = weather?.current?.let {
+                    stringResource(
+                        weatherDescription(
+                            weather.current.weather_code
+                        )
+                    )
+                } ?: ""
             )
 
             Text(
                 text = weather?.current?.wind_speed_10m?.let {
-                    "Wind: $it km/h"
+                    stringResource(
+                        R.string.wind_value,
+                        it
+                    )
                 } ?: ""
             )
 

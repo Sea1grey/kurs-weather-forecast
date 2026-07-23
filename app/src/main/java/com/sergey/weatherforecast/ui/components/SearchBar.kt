@@ -8,7 +8,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sergey.weatherforecast.R
 
 @Composable
 fun SearchBar(
@@ -22,7 +24,9 @@ fun SearchBar(
         value = searchText,
         onValueChange = onTextChange,
         label = {
-            Text("City")
+            Text(
+                text = stringResource(R.string.city)
+            )
         }
     )
 
@@ -31,6 +35,8 @@ fun SearchBar(
     Button(
         onClick = onSearch
     ) {
-        Text("Search")
+        Text(
+            text = stringResource(R.string.search)
+        )
     }
 }

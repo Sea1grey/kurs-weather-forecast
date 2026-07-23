@@ -1,3 +1,45 @@
 <resources>
-    <string name="app_name">WeatherForecast</string>
+
+    <string name="app_name">Weather Forecast</string>
+
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+
+    <string name="temperature">Temperature</string>
+    <string name="wind">Wind</string>
+
+    <string name="add_to_favorites">Add to favorites</string>
+
+    <string name="forecast_7_days">7-Day Forecast</string>
+
+    <string name="current_location">Current location</string>
+
+    <string name="clear_sky">Clear sky</string>
+    <string name="partly_cloudy">Partly cloudy</string>
+    <string name="fog">Fog</string>
+    <string name="drizzle">Drizzle</string>
+    <string name="rain">Rain</string>
+    <string name="snow">Snow</string>
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="unknown">Unknown</string>
+
+    <string name="temperature_value">Temperature: %1$.1f°C</string>
+    <string name="wind_value">Wind: %1$.1f km/h</string>
+    <string name="no_data">No data</string>
+
+    <string name="search">Search</string>
+    <string name="city">City</string>
+
+    <string name="favorite">Add to favorite</string>
+
+    <string name="weather_label">Weather</string>
+    <string name="favorite_label">Favorite</string>
+    <string name="settings_label">Settings</string>
+
+    <string name="language">Language</string>
+    <string name="system_language">System default</string>
+    <string name="version">Version</string>
+    <string name="developer">Developer</string>
+    <string name="developer_name">Sergey Balobanov</string>
+
 </resources>

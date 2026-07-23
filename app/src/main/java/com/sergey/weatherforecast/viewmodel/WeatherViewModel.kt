@@ -61,7 +61,18 @@ class WeatherViewModel(
 
             repository.getLastCity().collect { cityName ->
 
-                if (cityName == null) return@collect
+                if (cityName == null) {
+                    _cityName.value = "Moscow"
+
+                    _weather.value =
+                        repository.getCurrentWeather(
+                            55.75,
+                            37.62
+                        )
+
+                    return@collect
+                }
+
 
                 val city =
                     repository.getCityByName(cityName)
@@ -78,25 +89,6 @@ class WeatherViewModel(
         }
     }
 
-    fun loadWeather() {
-        viewModelScope.launch {
-            currentCity = CityResponse(
-                name = "Moscow",
-                latitude = 55.75,
-                longitude = 37.62,
-                country = "Russia"
-            )
-
-            try {
-                _weather.value = repository.getCurrentWeather(
-                    55.75,
-                    37.62
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 
     fun searchWeather() {
         viewModelScope.launch {
