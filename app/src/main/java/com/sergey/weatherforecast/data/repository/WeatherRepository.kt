@@ -15,9 +15,12 @@ class WeatherRepository(
     private val cityApi: CityApi,
     private val dataStoreManager: DataStoreManager
 ) {
-
     fun getCities(): Flow<List<CityEntity>> {
         return cityDao.getAllCities()
+    }
+
+    fun getLastCity(): Flow<String?> {
+        return dataStoreManager.getLastCity()
     }
 
     suspend fun addCity(city: CityEntity) {
@@ -51,8 +54,4 @@ class WeatherRepository(
     suspend fun saveLastCity(city: String) {
         dataStoreManager.saveLastCity(city)
     }
-
-    fun getLastCity() =
-        dataStoreManager.lastCity
-
 }

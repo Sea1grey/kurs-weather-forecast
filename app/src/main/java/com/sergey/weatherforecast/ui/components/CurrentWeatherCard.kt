@@ -31,7 +31,9 @@ fun CurrentWeatherCard(
         ) {
 
             Text(
-                stringResource(R.string.current_location)
+                text = cityName.ifBlank {
+                    stringResource(R.string.current_location)
+                }
             )
 
             Text(

@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.sergey.weatherforecast.data.remote.CityResponse
 import com.sergey.weatherforecast.data.local.CityEntity
-import com.sergey.weatherforecast.data.preferences.DataStoreManager
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 
 class WeatherViewModel(
     private val repository: WeatherRepository
@@ -22,7 +22,7 @@ class WeatherViewModel(
 
     private val _searchText = MutableStateFlow("")
 
-    private val _cityName = MutableStateFlow("Moscow")
+    private val _cityName = MutableStateFlow("")
 
     private var currentCity: CityResponse? = null
 
@@ -32,6 +32,15 @@ class WeatherViewModel(
 
     val cities: Flow<List<CityEntity>> =
         repository.getCities()
+
+    private companion object {
+
+        const val DEFAULT_CITY = "Moscow"
+
+        const val DEFAULT_LAT = 55.75
+
+        const val DEFAULT_LON = 37.62
+    }
 
     fun updateSearchText(text: String) {
         _searchText.value = text
@@ -52,6 +61,8 @@ class WeatherViewModel(
                     city.latitude,
                     city.longitude
                 )
+
+            _searchText.value = ""
         }
     }
 
@@ -59,67 +70,62 @@ class WeatherViewModel(
 
         viewModelScope.launch {
 
-            repository.getLastCity().collect { cityName ->
+            val cityName = repository.getLastCity().first()
 
-                if (cityName == null) {
-                    _cityName.value = "Moscow"
+            if (cityName == null) {
+                _cityName.value = DEFAULT_CITY
 
-                    _weather.value =
-                        repository.getCurrentWeather(
-                            55.75,
-                            37.62
-                        )
+                _weather.value =
+                    repository.getCurrentWeather(
+                        DEFAULT_LAT,
+                        DEFAULT_LON
+                    )
 
-                    return@collect
-                }
+                return@launch
+            }
+
+            val city =
+                repository.getCityByName(cityName)
+                    ?: return@launch
+
+            _cityName.value = city.name
+
+            _weather.value =
+                repository.getCurrentWeather(
+                    city.latitude,
+                    city.longitude
+                )
+        }
+    }
 
 
-                val city =
-                    repository.getCityByName(cityName)
-                        ?: return@collect
+    fun searchWeather() {
+
+        viewModelScope.launch {
+
+            try {
+
+                val city = repository.searchCity(searchText.value)
+                    ?: return@launch
+
+                currentCity = city
 
                 _cityName.value = city.name
+
+                repository.saveLastCity(city.name)
 
                 _weather.value =
                     repository.getCurrentWeather(
                         city.latitude,
                         city.longitude
                     )
-            }
-        }
-    }
 
-
-    fun searchWeather() {
-        viewModelScope.launch {
-            try {
-                val city = repository.searchCity(searchText.value)
-                    ?: return@launch
-
-                _weather.value = repository.getCurrentWeather(
-                    city.latitude,
-                    city.longitude
-                )
-
-                _cityName.value = city.name
-                repository.saveLastCity(city.name)
+                _searchText.value = ""
 
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            val city = repository.searchCity(searchText.value)
-                ?: return@launch
-
-            currentCity = city
-
-            _cityName.value = city.name
-
-            _weather.value = repository.getCurrentWeather(
-                city.latitude,
-                city.longitude
-            )
         }
-
     }
 
     fun addCurrentCity() {

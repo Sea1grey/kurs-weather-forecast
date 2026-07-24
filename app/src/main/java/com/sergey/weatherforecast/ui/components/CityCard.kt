@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sergey.weatherforecast.data.local.CityEntity
+import androidx.compose.ui.res.stringResource
+import com.sergey.weatherforecast.R
 
 @Composable
 fun CityCard(
@@ -48,7 +50,8 @@ fun CityCard(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete city"
+                    contentDescription =
+                        stringResource(R.string.delete_city)
                 )
             }
         }

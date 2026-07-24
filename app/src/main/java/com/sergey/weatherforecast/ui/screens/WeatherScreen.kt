@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sergey.weatherforecast.viewmodel.WeatherViewModel
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Alignment
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Surface
 import com.sergey.weatherforecast.ui.components.SearchBar
 import com.sergey.weatherforecast.ui.components.CurrentWeatherCard
@@ -22,6 +19,8 @@ import com.sergey.weatherforecast.ui.components.ForecastCard
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.res.stringResource
 import com.sergey.weatherforecast.R
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.fillMaxWidth
 
 @Composable
 fun WeatherScreen(
@@ -44,9 +43,17 @@ fun WeatherScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            item {
+                Text(
+                    text = cityName,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
+
             item{
                 SearchBar(
                     searchText = searchText,
@@ -56,23 +63,27 @@ fun WeatherScreen(
             }
 
             item{
-                weather?.let {
+                weather?.let { currentWeather ->
                     CurrentWeatherCard(
-                        weather = weather,
-                        cityName = cityName,
+                        weather = currentWeather,
+                        cityName = cityName
                     )
                 }
             }
 
-            item{
-                Button(
-                    onClick = {
-                        viewModel.addCurrentCity()
+            weather?.let {
+                item {
+                    Button(
+                        modifier =
+                            Modifier.fillMaxWidth(),
+                        onClick = {
+                            viewModel.addCurrentCity()
+                        }
+                    ) {
+                        Text(
+                            stringResource(R.string.favorite)
+                        )
                     }
-                ) {
-                    Text(
-                        text = stringResource(R.string.favorite)
-                    )
                 }
             }
 
@@ -80,7 +91,8 @@ fun WeatherScreen(
 
                 item {
                     Text(
-                        text = stringResource(R.string.forecast_7_days)
+                        text = stringResource(R.string.forecast_7_days),
+                        style = MaterialTheme.typography.titleLarge
                     )
                 }
 
@@ -96,5 +108,4 @@ fun WeatherScreen(
             }
         }
     }
-
 }

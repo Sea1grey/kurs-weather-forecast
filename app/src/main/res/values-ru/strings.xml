@@ -42,4 +42,6 @@
     <string name="developer">Разработчик</string>
     <string name="developer_name">Сергей Балобанов</string>
 
+    <string name="delete_city">Удалить город</string>
+
 </resources>

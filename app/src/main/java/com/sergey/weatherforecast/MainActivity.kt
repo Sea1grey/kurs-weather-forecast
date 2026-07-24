@@ -11,7 +11,6 @@ import com.sergey.weatherforecast.data.repository.WeatherRepository
 import com.sergey.weatherforecast.data.local.AppDatabase
 import com.sergey.weatherforecast.viewmodel.WeatherViewModelFactory
 import com.sergey.weatherforecast.data.remote.WeatherApi
-import com.sergey.weatherforecast.ui.screens.WeatherScreen
 import com.sergey.weatherforecast.data.remote.CityApi
 import com.sergey.weatherforecast.data.preferences.DataStoreManager
 import com.sergey.weatherforecast.ui.navigation.Navigation
