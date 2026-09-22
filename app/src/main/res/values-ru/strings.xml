@@ -1,0 +1,47 @@
+<resources>
+
+    <string name="app_name">Прогноз погоды</string>
+
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+
+    <string name="temperature">Температура</string>
+    <string name="wind">Ветер</string>
+
+    <string name="add_to_favorites">Добавить в избранное</string>
+
+    <string name="forecast_7_days">Прогноз на 7 дней</string>
+
+    <string name="current_location">Текущая локация</string>
+
+    <string name="clear_sky">Ясно</string>
+    <string name="partly_cloudy">Переменная облачность</string>
+    <string name="fog">Туман</string>
+    <string name="drizzle">Морось</string>
+    <string name="rain">Дождь</string>
+    <string name="snow">Снег</string>
+    <string name="thunderstorm">Гроза</string>
+    <string name="unknown">Неизвестно</string>
+
+    <string name="temperature_value">Температура: %1$.1f°C</string>
+    <string name="wind_value">Ветер: %1$.1f км/ч</string>
+    <string name="no_data">Нет данных</string>
+
+    <string name="search">Поиск</string>
+    <string name="city">Город</string>
+
+    <string name="favorite">Добавить в избранное</string>
+
+    <string name="weather_label">Погода</string>
+    <string name="favorite_label">Избранное</string>
+    <string name="settings_label">Настройки</string>
+
+    <string name="language">Язык</string>
+    <string name="system_language">Язык системы</string>
+    <string name="version">Версия</string>
+    <string name="developer">Разработчик</string>
+    <string name="developer_name">Сергей Балобанов</string>
+
+    <string name="delete_city">Удалить город</string>
+
+</resources>
